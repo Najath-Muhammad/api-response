@@ -4,9 +4,6 @@ import { apiResponse } from "../src/middleware/apiResponse.js";
 import { apiErrorHandler } from "../src/middleware/apiErrorHandler.js";
 import { ApiError } from "../src/errors/ApiError.js";
 
-// ---------------------------------------------------------------------------
-// asyncHandler tests
-// ---------------------------------------------------------------------------
 import { asyncHandler } from "../src/asyncHandler.js";
 
 const mockReq = {} as Request;
@@ -74,24 +71,24 @@ describe("asyncHandler()", () => {
   });
 });
 
-// ---------------------------------------------------------------------------
-// Mock factory for res object
-// ---------------------------------------------------------------------------
 function createMockRes(): Response & { _statusCode: number; _body: unknown } {
   const res = {
     _statusCode: 200,
     _body: null as unknown,
-    status(code: number) { this._statusCode = code; return this; },
-    json(body: unknown) { this._body = body; return this; },
+    status(code: number) {
+      this._statusCode = code;
+      return this;
+    },
+    json(body: unknown) {
+      this._body = body;
+      return this;
+    },
     success: undefined as unknown,
     error: undefined as unknown,
   } as unknown as Response & { _statusCode: number; _body: unknown };
   return res;
 }
 
-// ---------------------------------------------------------------------------
-// apiResponse() middleware tests
-// ---------------------------------------------------------------------------
 describe("apiResponse() middleware", () => {
   let res: ReturnType<typeof createMockRes>;
   let next: NextFunction;
@@ -131,7 +128,11 @@ describe("apiResponse() middleware", () => {
 
   it("res.success() accepts custom status code", () => {
     apiResponse()(mockReq, res, next);
-    (res as unknown as { success: (d: unknown, m: string, s: number) => void }).success({}, "Created", 201);
+    (res as unknown as { success: (d: unknown, m: string, s: number) => void }).success(
+      {},
+      "Created",
+      201,
+    );
     expect(res._statusCode).toBe(201);
   });
 
@@ -150,15 +151,15 @@ describe("apiResponse() middleware", () => {
 
   it("res.error() includes details when provided", () => {
     apiResponse()(mockReq, res, next);
-    (res as unknown as { error: (m: string, s: number, d: unknown) => void })
-      .error("Validation failed", 400, { field: "email" });
+    (res as unknown as { error: (m: string, s: number, d: unknown) => void }).error(
+      "Validation failed",
+      400,
+      { field: "email" },
+    );
     expect((res._body as { details: unknown }).details).toEqual({ field: "email" });
   });
 });
 
-// ---------------------------------------------------------------------------
-// apiErrorHandler() middleware tests
-// ---------------------------------------------------------------------------
 describe("apiErrorHandler() middleware", () => {
   let res: ReturnType<typeof createMockRes>;
   let next: NextFunction;
@@ -175,7 +176,12 @@ describe("apiErrorHandler() middleware", () => {
   });
 
   it("handles ApiError with details", () => {
-    apiErrorHandler()(new ApiError("Validation failed", 400, { field: "email" }), mockReq, res, next);
+    apiErrorHandler()(
+      new ApiError("Validation failed", 400, { field: "email" }),
+      mockReq,
+      res,
+      next,
+    );
     expect(res._statusCode).toBe(400);
     expect((res._body as { details: unknown }).details).toEqual({ field: "email" });
   });
@@ -183,7 +189,11 @@ describe("apiErrorHandler() middleware", () => {
   it("returns 500 for unknown errors", () => {
     apiErrorHandler()(new Error("Unknown crash"), mockReq, res, next);
     expect(res._statusCode).toBe(500);
-    expect(res._body).toEqual({ success: false, message: "Internal Server Error", statusCode: 500 });
+    expect(res._body).toEqual({
+      success: false,
+      message: "Internal Server Error",
+      statusCode: 500,
+    });
   });
 
   it("does not expose internal message for unknown errors", () => {

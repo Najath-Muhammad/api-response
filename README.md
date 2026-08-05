@@ -96,15 +96,15 @@ app.listen(3000);
 
 Pure function. Builds a standardized success response object.
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `data` | `T` | ✅ | Response payload (any type) |
-| `message` | `string` | ❌ | Message (default: `"Success"`) |
+| Parameter | Type     | Required | Description                    |
+| --------- | -------- | -------- | ------------------------------ |
+| `data`    | `T`      | ✅       | Response payload (any type)    |
+| `message` | `string` | ❌       | Message (default: `"Success"`) |
 
 **Returns:** `{ success: true, message: string, data: T }`
 
 ```ts
-successResponse({ data: user, message: "User fetched" })
+successResponse({ data: user, message: "User fetched" });
 // { success: true, message: "User fetched", data: { ... } }
 ```
 
@@ -114,16 +114,16 @@ successResponse({ data: user, message: "User fetched" })
 
 Pure function. Builds a standardized error response object.
 
-| Parameter | Type | Required | Description |
-|-----------|------|----------|-------------|
-| `message` | `string` | ✅ | Error description |
-| `statusCode` | `number` | ❌ | HTTP status code (default: `500`) |
-| `details` | `unknown` | ❌ | Structured validation details |
+| Parameter    | Type      | Required | Description                       |
+| ------------ | --------- | -------- | --------------------------------- |
+| `message`    | `string`  | ✅       | Error description                 |
+| `statusCode` | `number`  | ❌       | HTTP status code (default: `500`) |
+| `details`    | `unknown` | ❌       | Structured validation details     |
 
 **Returns:** `{ success: false, message: string, statusCode: number, details?: unknown }`
 
 ```ts
-errorResponse({ message: "Not found", statusCode: 404 })
+errorResponse({ message: "Not found", statusCode: 404 });
 // { success: false, message: "Not found", statusCode: 404 }
 ```
 
@@ -139,15 +139,15 @@ app.use(apiResponse());
 
 #### `res.success(data, message?, status?)`
 
-| Parameter | Type | Default | Description |
-|-----------|------|---------|-------------|
-| `data` | `unknown` | — | Response payload |
-| `message` | `string` | `"Success"` | Message |
-| `status` | `number` | `200` | HTTP status code |
+| Parameter | Type      | Default     | Description      |
+| --------- | --------- | ----------- | ---------------- |
+| `data`    | `unknown` | —           | Response payload |
+| `message` | `string`  | `"Success"` | Message          |
+| `status`  | `number`  | `200`       | HTTP status code |
 
 ```ts
-res.success(user, "User fetched");          // 200
-res.success(newUser, "User created", 201);   // 201
+res.success(user, "User fetched"); // 200
+res.success(newUser, "User created", 201); // 201
 ```
 
 #### `res.error(message, statusCode?, details?)`
@@ -168,13 +168,13 @@ throw new ApiError("User not found", 404);
 throw new ApiError("Validation failed", 400, { field: "email", issue: "required" });
 ```
 
-| Property | Type | Description |
-|----------|------|-------------|
-| `message` | `string` | Error message |
-| `statusCode` | `number` | HTTP status code (default: `500`) |
-| `details` | `ApiErrorDetails \| undefined` | Optional validation info |
-| `isApiError` | `true` | Flag for middleware detection |
-| `name` | `"ApiError"` | Class name in stack traces |
+| Property     | Type                           | Description                       |
+| ------------ | ------------------------------ | --------------------------------- |
+| `message`    | `string`                       | Error message                     |
+| `statusCode` | `number`                       | HTTP status code (default: `500`) |
+| `details`    | `ApiErrorDetails \| undefined` | Optional validation info          |
+| `isApiError` | `true`                         | Flag for middleware detection     |
+| `name`       | `"ApiError"`                   | Class name in stack traces        |
 
 ---
 
@@ -196,24 +196,27 @@ app.use(apiErrorHandler());
 Wraps async route handlers so thrown errors reach `apiErrorHandler()`.
 
 ```ts
-app.get("/users", asyncHandler(async (req, res) => {
-  const users = await getUsers(); // errors safely forwarded to next()
-  res.success(users, "Users fetched");
-}));
+app.get(
+  "/users",
+  asyncHandler(async (req, res) => {
+    const users = await getUsers(); // errors safely forwarded to next()
+    res.success(users, "Users fetched");
+  }),
+);
 ```
 
 ---
 
 ### `createPagination(input)`
 
-| Parameter | Type | Description |
-|-----------|------|-------------|
-| `page` | `number` | Current page (clamped to ≥1) |
-| `limit` | `number` | Items per page (clamped to ≥1) |
-| `totalItems` | `number` | Total items across all pages |
+| Parameter    | Type     | Description                    |
+| ------------ | -------- | ------------------------------ |
+| `page`       | `number` | Current page (clamped to ≥1)   |
+| `limit`      | `number` | Items per page (clamped to ≥1) |
+| `totalItems` | `number` | Total items across all pages   |
 
 ```ts
-createPagination({ page: 2, limit: 10, totalItems: 57 })
+createPagination({ page: 2, limit: 10, totalItems: 57 });
 // { page: 2, limit: 10, totalItems: 57, totalPages: 6, hasNextPage: true, hasPreviousPage: true }
 ```
 
@@ -284,6 +287,7 @@ main                 ← stable, release-ready
 ```
 
 **To create a feature branch:**
+
 ```bash
 git checkout -b feat/my-feature
 # ... implement ...

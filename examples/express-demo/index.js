@@ -1,35 +1,5 @@
-/**
- * index.js — Express Demo Application
- *
- * Demonstrates how a developer uses @najathm/api-response in a real Express app.
- *
- * HOW TO RUN (two options):
- *
- * Option 1 — Use the local build (recommended during development):
- *   1. From project root: npm run build
- *   2. cd examples/express-demo && npm install
- *   3. node index.js
- *
- * Option 2 — After publishing to npm:
- *   1. npm install @najathm/api-response
- *   2. Change the import path below from "../../dist/index.js" to "@najathm/api-response"
- *   3. node index.js
- *
- * TEST ENDPOINTS:
- *   curl http://localhost:3000/health
- *   curl http://localhost:3000/users
- *   curl http://localhost:3000/users/1
- *   curl http://localhost:3000/users/999         (triggers 404 ApiError)
- *   curl "http://localhost:3000/users?page=1&limit=2"
- *   curl -X POST http://localhost:3000/users \
- *     -H "Content-Type: application/json" \
- *     -d '{"name":"Alice","email":"alice@example.com"}'
- */
-
 import express from "express";
 
-// For local dev, import from the built dist folder.
-// After publishing: import { ... } from "@najathm/api-response"
 import {
   apiResponse,
   apiErrorHandler,
@@ -41,22 +11,18 @@ import {
 const app = express();
 app.use(express.json());
 
-// Register response helpers BEFORE routes
 app.use(apiResponse());
 
-// In-memory "database" for this demo
 const users = [
   { id: "1", name: "Najath Muhammad", email: "najath@example.com", role: "admin" },
   { id: "2", name: "Alice Johnson", email: "alice@example.com", role: "user" },
   { id: "3", name: "Bob Smith", email: "bob@example.com", role: "user" },
 ];
 
-// Health check
 app.get("/health", (_req, res) => {
   res.success({ status: "ok", timestamp: new Date().toISOString() }, "Service is healthy");
 });
 
-// Get all users with pagination
 app.get(
   "/users",
   asyncHandler(async (req, res) => {
@@ -71,11 +37,9 @@ app.get(
   }),
 );
 
-// Get a single user by ID
 app.get(
   "/users/:id",
   asyncHandler(async (req, res) => {
-    // Simulate async DB lookup
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     const user = users.find((u) => u.id === req.params["id"]);
@@ -88,7 +52,6 @@ app.get(
   }),
 );
 
-// Create a new user
 app.post(
   "/users",
   asyncHandler(async (req, res) => {
@@ -107,7 +70,6 @@ app.post(
   }),
 );
 
-// Error handler LAST
 app.use(apiErrorHandler());
 
 const PORT = 3000;

@@ -2,12 +2,15 @@ import { describe, expect, it } from "vitest";
 import { createPagination } from "../src/utils/pagination.js";
 
 describe("createPagination()", () => {
-  // Happy path
   it("calculates a normal middle page correctly", () => {
     const result = createPagination({ page: 2, limit: 10, totalItems: 57 });
     expect(result).toEqual({
-      page: 2, limit: 10, totalItems: 57,
-      totalPages: 6, hasNextPage: true, hasPreviousPage: true,
+      page: 2,
+      limit: 10,
+      totalItems: 57,
+      totalPages: 6,
+      hasNextPage: true,
+      hasPreviousPage: true,
     });
   });
 
@@ -41,7 +44,6 @@ describe("createPagination()", () => {
     expect(result.hasPreviousPage).toBe(false);
   });
 
-  // Zero items
   it("handles zero total items", () => {
     const result = createPagination({ page: 1, limit: 10, totalItems: 0 });
     expect(result.totalItems).toBe(0);
@@ -50,7 +52,6 @@ describe("createPagination()", () => {
     expect(result.hasPreviousPage).toBe(false);
   });
 
-  // Invalid page
   it("clamps page 0 to 1", () => {
     expect(createPagination({ page: 0, limit: 10, totalItems: 50 }).page).toBe(1);
   });
@@ -59,7 +60,6 @@ describe("createPagination()", () => {
     expect(createPagination({ page: -5, limit: 10, totalItems: 50 }).page).toBe(1);
   });
 
-  // Invalid limit
   it("clamps limit 0 to 1", () => {
     const result = createPagination({ page: 1, limit: 0, totalItems: 10 });
     expect(result.limit).toBe(1);
@@ -76,7 +76,6 @@ describe("createPagination()", () => {
     expect(result.totalPages).toBe(0);
   });
 
-  // Non-integers
   it("floors non-integer page", () => {
     expect(createPagination({ page: 2.7, limit: 10, totalItems: 50 }).page).toBe(2);
   });
@@ -85,7 +84,6 @@ describe("createPagination()", () => {
     expect(createPagination({ page: 1, limit: 10.9, totalItems: 50 }).limit).toBe(10);
   });
 
-  // Page beyond totalPages
   it("page beyond totalPages has no next page", () => {
     const result = createPagination({ page: 100, limit: 10, totalItems: 50 });
     expect(result.page).toBe(100);

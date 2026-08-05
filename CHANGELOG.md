@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [Unreleased]
 
 ### Planned
+
 - Optional timestamp field in responses
 - Request ID tracking support
 
@@ -17,6 +18,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [1.0.0] - 2026-08-04
 
 ### Added
+
 - `successResponse()` — standardized success response builder
 - `errorResponse()` — standardized error response builder
 - `createPagination()` — pagination metadata calculator with full edge case handling
