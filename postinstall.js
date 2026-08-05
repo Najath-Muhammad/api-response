@@ -1,0 +1,21 @@
+const RESET = "\x1b[0m";
+const BOLD = "\x1b[1m";
+const GREEN = "\x1b[32m";
+const CYAN = "\x1b[36m";
+const YELLOW = "\x1b[33m";
+
+console.log("");
+console.log(`${GREEN}========================================================================${RESET}`);
+console.log(`${BOLD}${CYAN}  🚀 Thank you for installing @najathm/api-response!${RESET}`);
+console.log(`${GREEN}========================================================================${RESET}`);
+console.log("");
+console.log(`  This package provides standardized JSON responses, async error`);
+console.log(`  handling, and automatic pagination for your Express.js apps.`);
+console.log("");
+console.log(`  ${YELLOW}📚 Documentation & Examples:${RESET}`);
+console.log(`  https://github.com/Najath-Muhammad/api-response`);
+console.log("");
+console.log(`  ${YELLOW}⭐️ If you find this helpful, please star the repo on GitHub!${RESET}`);
+console.log("");
+console.log(`${GREEN}========================================================================${RESET}`);
+console.log("");

@@ -44,9 +44,11 @@
     "dist",
     "README.md",
     "CHANGELOG.md",
-    "LICENSE"
+    "LICENSE",
+    "postinstall.js"
   ],
   "scripts": {
+    "postinstall": "node postinstall.js",
     "dev": "tsup --watch",
     "build": "tsup",
     "test": "vitest run",
