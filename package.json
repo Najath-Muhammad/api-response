@@ -1,6 +1,6 @@
 {
   "name": "@najathm/api-response",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Reusable utilities for Express.js applications to standardize API responses, error handling, pagination, and async route handling.",
   "keywords": [
     "express",
